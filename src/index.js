@@ -3,16 +3,15 @@ import { defaultJSON } from "./default-doc";
 
 
 async function initEditor() {
-  const SDK = new StudioSDK({
-    editorId: "studio-editor"
-  });
-
-  SDK.loadEditor();
-  window.SDK = SDK;
-
-  await loadDocument(defaultJSON);
-}
-
+    const SDK = new StudioSDK({
+      editorId: "studio-editor"
+    });
+  
+    SDK.loadEditor();
+    window.SDK = SDK;
+  
+    await loadDocument(defaultJSON);
+  }
 
 
 async function loadDocument(docJSON) {
@@ -24,5 +23,18 @@ async function loadDocument(docJSON) {
 
 }
 
+async function getDocumentJSON() {
+    const documentJSON = (await SDK.document.getCurrentState()).data
+    return JSON.stringify(documentJSON)
+}
+
+window.download = async function() {
+    const documentJSON = await getDocumentJSON();
+    const documentData = "data:text/json;charset=utf-8," + encodeURIComponent(documentJSON);
+    const downloadAnchor = document.getElementById('downloadAnchor');
+    downloadAnchor.setAttribute("href", documentData);
+    downloadAnchor.setAttribute("download", "document.json");
+    downloadAnchor.click();
+}
 
 initEditor();
