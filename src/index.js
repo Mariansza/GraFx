@@ -1,2 +1,13 @@
 import StudioSDK from "@chili-publish/studio-sdk";
-console.log("I'm alive!");
+
+
+function initEditor() {
+  const SDK = new StudioSDK({
+    editorId: "studio-editor"
+  });
+
+  SDK.loadEditor();
+  window.SDK = SDK;
+}
+
+initEditor();
