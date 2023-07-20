@@ -11,7 +11,7 @@ async function initEditor() {
     window.SDK = SDK;
   
     await loadDocument(defaultJSON);
-  }
+}
 
 
 async function loadDocument(docJSON) {
@@ -36,5 +36,13 @@ window.download = async function() {
     downloadAnchor.setAttribute("download", "document.json");
     downloadAnchor.click();
 }
+
+window.addTextFrame = async function() {
+    await window.SDK.frame.create("text", 10, 10, 100, 100);
+}
+
+window.setTool = async function(tool) {
+    await window.SDK.tool.setTool(tool);
+  }
 
 initEditor();
