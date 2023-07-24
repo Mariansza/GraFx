@@ -4,17 +4,24 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/styles/main.css" />
   <title>GraFx Studio Integration</title>
 </head>
 <body>
-  <h1  style="height: 5vh; display: flex; justify-content: space-evenly; align-items: center;">Hello World</h1>
-  <button onclick="download()">Download document</button>
-  <button onclick="setTool('select')">Select Tool</button>
-  <button onclick="setTool('hand')">Hand Tool</button>
-  <button onclick="setTool('textFrame')">Text Tool</button>
-  <div style="height: 90vh" id="studio-editor"></div>
-  <a id="downloadAnchor" style="display:hidden"></a>
-  <script type="module" src="./index.js"></script>
+    <div class="page-title">
+        <h1 id="project-title">GraFx Integration Project</h1>
+    </div>
+    <section class="toolbar">
+      <button class="button" onclick="downloadDocument()">Download Document</button>
+      <button class="button" onclick="setTool('select')">Select Tool</button>
+      <button class="button" onclick="setTool('hand')">Hand Tool</button>
+      <button class="button" onclick="setTool('textFrame')">Text Tool</button>
+      <button class="button" onclick="setTool('zoom')">Zoom</button>   
+      <button class="button" onclick="setTool('polygon')">Polygon</button>
+      <button class="button" onclick="setTool('rect')">Rectangle</button> 
+      <button class="button" onclick="setTool('ellipse')">Ellipse</button>  
+    </section>
+    <div style="height: 90vh" id="studio-editor"></div>
+    <script type="module" src="/src/index.js"></script>
 </body>
-
 </html>
