@@ -28,7 +28,7 @@ async function getDocumentJSON() {
     return JSON.stringify(documentJSON)
 }
 
-window.download = async function() {
+window.downloadDocument = async function() {
     const documentJSON = await getDocumentJSON();
     const documentData = "data:text/json;charset=utf-8," + encodeURIComponent(documentJSON);
     const downloadAnchor = document.getElementById('downloadAnchor');
@@ -42,19 +42,20 @@ window.setTool = async function(tool) {
     await window.SDK.tool.setTool(tool);
   }
 
-function toggleDropdown() {
+window.toggleDropdown = async function() {
     const dropdownContent = document.querySelector('.dropdown-content');
     dropdownContent.style.display = (dropdownContent.style.display === 'block') ? 'none' : 'block';
 }
 
-function toggleDropdownPointer() {
+window.toggleDropdownPointer = async function() {
     const pointerDropdown = document.querySelector('#pointer-dropdown');
     pointerDropdown.style.display = (pointerDropdown.style.display === 'block') ? 'none' : 'block';
 }
 
+window.Remove = async function() {
+    await window.SDK.frame.remove('2');
+    await window.SDK.frame.remove('1');
 
-window.toggleDropdownPointer = toggleDropdownPointer;
-window.toggleDropdown = toggleDropdown;
-
+}
 
 initEditor();

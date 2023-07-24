@@ -17,6 +17,7 @@
     </div>
     <section class="toolbar">
       <button class="menubutton" id="downloadbutton" onclick="downloadDocument()">Download Document</button>
+      <button class="menubutton" onclick="Remove()">Delete</button>
       <div class="dropdown">
         <button class="menubutton" >Pointer options</button>
         <div class="dropdown-content" id="pointer-dropdown">
@@ -36,6 +37,7 @@
     </div>
     </section>
     <div style="height: 90vh" id="studio-editor"></div>
+    <a id="downloadAnchor" style="display:hidden"></a>
     <script type="module" src="/src/index.js"></script>
 </body>
 </html>
