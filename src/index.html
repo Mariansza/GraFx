@@ -17,11 +17,16 @@
     </div>
     <section class="toolbar">
       <button class="menubutton" id="downloadbutton" onclick="downloadDocument()">Download Document</button>
-      <button class="menubutton" onclick="setTool('select')">Select Tool</button>
-      <button class="menubutton" onclick="setTool('hand')">Hand Tool</button>
-      <button class="menubutton" onclick="setTool('zoom')">Zoom</button>   
       <div class="dropdown">
-        <button class="menubutton" onclick="toggleDropdown()">Insertion</button>
+        <button class="menubutton" >Pointer options</button>
+        <div class="dropdown-content" id="pointer-dropdown">
+            <button class="button" onclick="setTool('select')">Select</button>
+            <button class="button" onclick="setTool('hand')">Hand</button>
+            <button class="button" onclick="setTool('zoom')">Zoom</button>
+        </div>
+      </div>
+      <div class="dropdown">
+        <button class="menubutton" >Insertion</button>
         <div class="dropdown-content">
             <button class="button" onclick="setTool('textFrame')">Text</button>
             <button class="button" onclick="setTool('ellipse')">Ellipse</button>

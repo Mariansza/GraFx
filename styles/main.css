@@ -109,6 +109,10 @@ body {
     display: block;
 }
 
+.dropdown:hover .dropdown-content #pointer-dropdown{
+    display: block;
+}
+
 .logo {
     width: 70px; 
     height: auto; 

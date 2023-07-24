@@ -47,5 +47,14 @@ function toggleDropdown() {
     dropdownContent.style.display = (dropdownContent.style.display === 'block') ? 'none' : 'block';
 }
 
+function toggleDropdownPointer() {
+    const pointerDropdown = document.querySelector('#pointer-dropdown');
+    pointerDropdown.style.display = (pointerDropdown.style.display === 'block') ? 'none' : 'block';
+}
+
+
+window.toggleDropdownPointer = toggleDropdownPointer;
 window.toggleDropdown = toggleDropdown;
+
+
 initEditor();
