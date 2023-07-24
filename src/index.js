@@ -38,10 +38,14 @@ window.download = async function() {
 }
 
 
-
 window.setTool = async function(tool) {
     await window.SDK.tool.setTool(tool);
   }
 
+function toggleDropdown() {
+    const dropdownContent = document.querySelector('.dropdown-content');
+    dropdownContent.style.display = (dropdownContent.style.display === 'block') ? 'none' : 'block';
+}
 
+window.toggleDropdown = toggleDropdown;
 initEditor();
