@@ -53,8 +53,10 @@ window.toggleDropdownPointer = async function() {
 }
 
 window.Remove = async function() {
-    await window.SDK.frame.remove('2');
-    await window.SDK.frame.remove('1');
+    const jsonString = (await window.SDK.frame.getSelected()).data;
+    const jsonArray = JSON.parse(jsonString);
+    const idAsString = jsonArray[0].id;
+    await window.SDK.frame.remove(idAsString);
 
 }
 
