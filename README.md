@@ -1,6 +1,6 @@
 # Basic integration example of SDK usage
 
-This basic example shows how simple it is to make a TypeScript integration, as well as using the SDK via NPM instead of a script.
+This basic example shows how simple it is to make a Javascript integration, as well as using the SDK via NPM instead of a script.
 
 ## How to run
 
