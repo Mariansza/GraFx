@@ -13,6 +13,8 @@ async function initEditor() {
     await loadDocument(defaultJSON);
 }
 
+initEditor();
+
 
 async function loadDocument(docJSON) {
     if (docJSON) {
@@ -42,6 +44,8 @@ window.setTool = async function(tool) {
     await window.SDK.tool.setTool(tool);
   }
 
+
+
 window.toggleDropdown = async function() {
     const dropdownContent = document.querySelector('.dropdown-content');
     dropdownContent.style.display = (dropdownContent.style.display === 'block') ? 'none' : 'block';
@@ -52,12 +56,27 @@ window.toggleDropdownPointer = async function() {
     pointerDropdown.style.display = (pointerDropdown.style.display === 'block') ? 'none' : 'block';
 }
 
-window.Remove = async function() {
+window.toggleDropdownEdit = async function() {
+    const editDropdown = document.querySelector('#edit-dropdown');
+    editDropdown.style.display = (editDropdown.style.display === 'block') ? 'none' : 'block';
+}
+
+window.remove = async function() {
     const jsonString = (await window.SDK.frame.getSelected()).data;
     const jsonArray = JSON.parse(jsonString);
     const idAsString = jsonArray[0].id;
     await window.SDK.frame.remove(idAsString);
-
 }
 
-initEditor();
+window.removeall = async function() {
+    const jsonString = (await window.SDK.frame.getAll()).data;
+    const jsonArray = JSON.parse(jsonString);
+
+    for (const frame of jsonArray) {
+        const idAsString = frame.id;
+        await window.SDK.frame.remove(idAsString);
+    }
+} 
+
+
+

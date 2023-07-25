@@ -17,7 +17,14 @@
     </div>
     <section class="toolbar">
       <button class="menubutton" id="downloadbutton" onclick="downloadDocument()">Download Document</button>
-      <button class="menubutton" onclick="Remove()">Delete</button>
+      <div class="dropdown">
+        <button class="menubutton">Edit</button>
+        <div class="dropdown-content" id="edit-dropdown">
+          <button class="button" onclick="remove()">Delete selected frame</button>
+          <button class="button" onclick="removeall()">Delete all</button>
+
+        </div>
+      </div>
       <div class="dropdown">
         <button class="menubutton" >Pointer options</button>
         <div class="dropdown-content" id="pointer-dropdown">
