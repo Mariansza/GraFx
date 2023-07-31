@@ -152,3 +152,41 @@ footer {
   .popup button {
     margin-right: 10px;
   }
+
+/* Add this CSS to style the image preview popup */
+/* Add this CSS to style the image preview popup */
+.popup {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #ffffff;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    border-radius: 4px;
+    z-index: 9999;
+    max-height: 90vh;
+    overflow-y: auto;
+  }
+  
+  /* Add this style to set a fixed width and height for each image */
+/* Add this style to set a fixed width and height for each image */
+img.preview-image {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    margin: 5px;
+    border: 1px solid #ddd; /* Ajoute une bordure de 1px avec une couleur grise */
+    border-radius: 4px; /* Ajoute un arrondi aux coins de l'image */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Ajoute une ombre légère pour une meilleure séparation */
+  }
+  
+  
+  /* Add this style to create rows of images */
+  .row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly; /* Adjust this property to control the space between the images */
+  }
+  

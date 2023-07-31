@@ -123,5 +123,60 @@ window.closePopup = async function() {
   }
 
 
+// Add this function to show the image preview popup
+window.showImagePreview = async function () {
+  const popup = window.open('', '_blank', 'toolbar=yes,scrollbars=yes,resizable=yes,top=100,left=100,width=800,height=600');
+  const apiUrl =
+    "https://prdqanzos.chili-publish.online/grafx/api/v1/environment/GraFx-Training-ST22/media?limit=10&sortBy=name&sortOrder=asc";
+  const response = await fetch(apiUrl, {
+    method: "GET",
+    headers: {
+      accept: "application/json",
+      Authorization:
+        "Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6InIzTzViUFFqV2pBWjNsd1pLd1FSaSJ9.eyJodHRwczovL2NoaWxpLXB1Ymxpc2guY29tL2Vudmlyb25tZW50SWQiOiJhNGMwYWM0Yi1hZWJmLTQ3MTAtYjQ1NC1iZmNlMTk2ZTg0MmUiLCJpc3MiOiJodHRwczovL2xvZ2luLmNoaWxpZ3JhZnguY29tLyIsInN1YiI6Ik1zV1hKeVUxVFMycEliQXBYQ25aR2J5ZkxWT3VEa2xzQGNsaWVudHMiLCJhdWQiOiJodHRwczovL2NoaWxpZ3JhZnguY29tIiwiaWF0IjoxNjkwNzg4Nzc4LCJleHAiOjE2OTA4NzUxNzgsImF6cCI6Ik1zV1hKeVUxVFMycEliQXBYQ25aR2J5ZkxWT3VEa2xzIiwic2NvcGUiOiJmb250Omxpc3QgZm9udDpyZWFkIG1lZGlhOmxpc3QgbWVkaWE6cmVhZCBteXByb2plY3Q6bGlzdCBteXByb2plY3Q6cmVhZCBvdXRwdXQ6YW5pbWF0ZWQgb3V0cHV0OnN0YXRpYyB0ZW1wbGF0ZV9jb2xsZWN0aW9uOmxpc3QgdGVtcGxhdGVfY29sbGVjdGlvbjpyZWFkIHRlbXBsYXRlOmxpc3QgdGVtcGxhdGU6cmVhZCIsImd0eSI6ImNsaWVudC1jcmVkZW50aWFscyJ9.s55iABfbBpfu5uyNIGsrFZM_YV2WnvFaJaNIc6KPfOX8uSZJcLWzzSjgHzZ_k6WaBi_uP8ZOkBpno5HQyp8mttm1OqsWxZM_iGSKebwxkppNQ_hit_MzAePd-xOWU8WQG2Bq1nNA0wYwGQD5ItXL5bjhb1-fvyhv1f455CXECLaQ7z6RPOUGAuwu3hAMDrOju2J4KdVpcT0KwklkQbdjJFI6AYxVNAqU6D8PGXJINjTMYjt00zpMAu3h7FRiWjEKmSnkkDdTfDfgBeGEaEiIep-NDnasqmIGvG0APJ7wNjcc07NHUsv9T2JmCPZHPnjvcJ6Ueg651eTOKj9pWu5mgw",
+    },
+  });
+
+  if (!response.ok) {
+    console.error("Failed to fetch image data.");
+    return;
+  }
+
+  const data = await response.json();
+
+  // Create and append image elements to the preview popup
+  data.data.forEach(async (image) => {
+    const imageUrl = `https://prdqanzos.chili-publish.online/grafx/api/v1/environment/GraFx-Training-ST22/media/${image.id}/preview/medium`;
+
+    // Fetch thumbnail image individually for each image
+    try {
+      const thumbnailResponse = await fetch(imageUrl, {
+        method: "GET",
+        headers: {
+          accept: "*/*",
+          Authorization:
+            "Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6InIzTzViUFFqV2pBWjNsd1pLd1FSaSJ9.eyJodHRwczovL2NoaWxpLXB1Ymxpc2guY29tL2Vudmlyb25tZW50SWQiOiJhNGMwYWM0Yi1hZWJmLTQ3MTAtYjQ1NC1iZmNlMTk2ZTg0MmUiLCJpc3MiOiJodHRwczovL2xvZ2luLmNoaWxpZ3JhZnguY29tLyIsInN1YiI6Ik1zV1hKeVUxVFMycEliQXBYQ25aR2J5ZkxWT3VEa2xzQGNsaWVudHMiLCJhdWQiOiJodHRwczovL2NoaWxpZ3JhZnguY29tIiwiaWF0IjoxNjkwNzg4Nzc4LCJleHAiOjE2OTA4NzUxNzgsImF6cCI6Ik1zV1hKeVUxVFMycEliQXBYQ25aR2J5ZkxWT3VEa2xzIiwic2NvcGUiOiJmb250Omxpc3QgZm9udDpyZWFkIG1lZGlhOmxpc3QgbWVkaWE6cmVhZCBteXByb2plY3Q6bGlzdCBteXByb2plY3Q6cmVhZCBvdXRwdXQ6YW5pbWF0ZWQgb3V0cHV0OnN0YXRpYyB0ZW1wbGF0ZV9jb2xsZWN0aW9uOmxpc3QgdGVtcGxhdGVfY29sbGVjdGlvbjpyZWFkIHRlbXBsYXRlOmxpc3QgdGVtcGxhdGU6cmVhZCIsImd0eSI6ImNsaWVudC1jcmVkZW50aWFscyJ9.s55iABfbBpfu5uyNIGsrFZM_YV2WnvFaJaNIc6KPfOX8uSZJcLWzzSjgHzZ_k6WaBi_uP8ZOkBpno5HQyp8mttm1OqsWxZM_iGSKebwxkppNQ_hit_MzAePd-xOWU8WQG2Bq1nNA0wYwGQD5ItXL5bjhb1-fvyhv1f455CXECLaQ7z6RPOUGAuwu3hAMDrOju2J4KdVpcT0KwklkQbdjJFI6AYxVNAqU6D8PGXJINjTMYjt00zpMAu3h7FRiWjEKmSnkkDdTfDfgBeGEaEiIep-NDnasqmIGvG0APJ7wNjcc07NHUsv9T2JmCPZHPnjvcJ6Ueg651eTOKj9pWu5mgw"
+        }
+      });
+
+      if (thumbnailResponse.ok) {
+        const blob = await thumbnailResponse.blob();
+        const objectUrl = URL.createObjectURL(blob);
+        const imgElement = document.createElement("img");
+        imgElement.src = objectUrl;
+        popup.document.body.appendChild(imgElement);
+      } else {
+        console.error(`Failed to fetch thumbnail for image: ${image.id}`);
+      }
+    } catch (error) {
+      console.error(`Failed to fetch thumbnail for image: ${image.id}`, error);
+    }
+  });
+
+  // Show the preview window
+  popup.document.title = 'Image Preview';
+};
+
+  
 
 initEditor(authToken);

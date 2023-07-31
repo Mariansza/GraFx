@@ -17,6 +17,13 @@
     </div>
     <section class="toolbar">
       <button class="menubutton" id="downloadbutton" onclick="downloadDocument()">Download Document</button>
+      <button class="menubutton" onclick="showImagePreview()">Preview Images</button>
+      <div class="popup" id="image-popup">
+        <div class="image-preview" id="image-preview">
+          <!-- Images will be dynamically added here -->
+        </div>
+        <button onclick="closeImagePreview()">Close</button>
+      </div>
       <div class="dropdown">
         <button class="menubutton">Edit</button>
         <div class="dropdown-content" id="edit-dropdown">
