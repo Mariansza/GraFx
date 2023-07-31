@@ -1,8 +1,10 @@
 import StudioSDK from "@chili-publish/studio-sdk";
 import { defaultJSON } from "./default-doc";
+require("dotenv").config();
 
+const authToken = process.env.AUTH_TOKEN ;
 
-async function initEditor() {
+async function initEditor(authToken) {
     const SDK = new StudioSDK({
       editorId: "studio-editor"
     });
@@ -10,17 +12,31 @@ async function initEditor() {
     SDK.loadEditor();
     window.SDK = SDK;
   
-    await loadDocument(defaultJSON);
+    await loadDocument(defaultJSON, authToken);
 }
 
-initEditor();
 
 
-async function loadDocument(docJSON) {
+
+async function loadDocument(docJSON, authToken) {
+    const environmentAPI = window.SDK.utils.createEnvironmentBaseURL({type: "production", environment: "GraFx-Training-ST22"})
+    window.SDK.configuration.setValue("ENVIRONMENT_API", environmentAPI);
+
+
+
     if (docJSON) {
         await window.SDK.document.load(docJSON);
     } else {
         await window.SDK.document.load("{}");
+    }
+
+    if (authToken){
+        await window.SDK.connector.configure('grafx-media', async function(configurator){
+            await configurator.setChiliToken(authToken);
+        });
+        await window.SDK.connector.configure('grafx-font', async function(configurator){
+            await configurator.setChiliToken(authToken);
+        });
     }
 
 }
@@ -61,6 +77,11 @@ window.toggleDropdownEdit = async function() {
     editDropdown.style.display = (editDropdown.style.display === 'block') ? 'none' : 'block';
 }
 
+window.toggleDropdownImage = async function() {
+    const imageDropdown = document.querySelector('#image-dropdown');
+    imageDropdown.style.display = (imageDropdown.style.display === 'block') ? 'none' : 'block';
+}
+
 window.remove = async function() {
     const jsonString = (await window.SDK.frame.getSelected()).data;
     const jsonArray = JSON.parse(jsonString);
@@ -80,3 +101,27 @@ window.removeall = async function() {
 
 
 
+window.updateImage = async function() {
+    const jsonString = (await window.SDK.frame.getSelected()).data;
+    const jsonArray = JSON.parse(jsonString);
+    const frameID = jsonArray[0].id;
+    const inputField = await document.getElementById('inputField');
+    const assetID = await inputField.value;
+    await window.SDK.frame.setImageFromConnector(frameID, 'grafx-media', assetID);
+    inputField.value = '';
+    closePopup();
+  }
+
+window.showPopup = async function() {
+    const popup = await document.getElementById('popup');
+    popup.style.display = 'block';
+  }
+
+window.closePopup = async function() {
+    const popup = await document.getElementById('popup');
+    popup.style.display = 'none';
+  }
+
+
+
+initEditor(authToken);

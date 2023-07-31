@@ -22,7 +22,6 @@
         <div class="dropdown-content" id="edit-dropdown">
           <button class="button" onclick="remove()">Delete selected frame</button>
           <button class="button" onclick="removeall()">Delete all</button>
-
         </div>
       </div>
       <div class="dropdown">
@@ -41,7 +40,19 @@
             <button class="button" onclick="setTool('rect')">Rectangle</button>
             <button class="button" onclick="setTool('polygon')">Polygon</button>
         </div>
-    </div>
+      </div>
+      <div class="dropdown">
+        <button class="menubutton">Image</button>
+        <div class="dropdown-content" id="image-dropdown">
+          <button class="button" onclick="setTool('imageFrame')">Add frame</button>
+          <button class="button" onclick="showPopup()">Update image</button>
+          <div class="popup" id="popup">
+            <input type="text" id="inputField" placeholder="Enter the id of the wanted image">
+            <button onclick="updateImage()">Validate</button>
+            <button onclick="closePopup()">Cancel</button>
+          </div>
+        </div>
+      </div>
     </section>
     <div style="height: 100vh" id="studio-editor"></div>
     <a id="downloadAnchor" style="display:hidden"></a>

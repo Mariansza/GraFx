@@ -2,6 +2,3 @@ const defaultJSON = "{\"selectedLayoutId\":\"0\",\"sdkVersion\":\"0.133.2\",\"en
 export {defaultJSON}
 
 
-
-
-

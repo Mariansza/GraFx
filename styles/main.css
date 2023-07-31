@@ -129,3 +129,26 @@ footer {
     color: #444;
     font-family: Arial, sans-serif;
 }
+
+.popup {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #ffffff;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    border-radius: 4px;
+    z-index: 9999;
+  }
+  
+  .popup input {
+    display: block;
+    width: 100%;
+    margin-bottom: 10px;
+  }
+  
+  .popup button {
+    margin-right: 10px;
+  }
