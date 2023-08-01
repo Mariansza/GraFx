@@ -153,8 +153,7 @@ footer {
     margin-right: 10px;
   }
 
-/* Add this CSS to style the image preview popup */
-/* Add this CSS to style the image preview popup */
+
 .popup {
     display: none;
     position: fixed;
@@ -170,23 +169,25 @@ footer {
     overflow-y: auto;
   }
   
-  /* Add this style to set a fixed width and height for each image */
-/* Add this style to set a fixed width and height for each image */
+
 img.preview-image {
     width: 100px;
     height: 100px;
     object-fit: cover;
     margin: 5px;
-    border: 1px solid #ddd; /* Ajoute une bordure de 1px avec une couleur grise */
-    border-radius: 4px; /* Ajoute un arrondi aux coins de l'image */
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Ajoute une ombre légère pour une meilleure séparation */
+    border: 1px solid #ddd; 
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); 
   }
   
-  
-  /* Add this style to create rows of images */
+  .image-preview {
+    max-height: calc(100vh - 270px); 
+    overflow-y: auto; 
+    padding: 10px; 
+}
   .row {
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-evenly; /* Adjust this property to control the space between the images */
+    justify-content: space-between; 
   }
   

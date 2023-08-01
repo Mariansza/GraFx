@@ -123,11 +123,12 @@ window.closePopup = async function() {
   }
 
 
-// Add this function to show the image preview popup
+// function to show the image preview popup
 window.showImagePreview = async function () {
-  const popup = window.open('', '_blank', 'toolbar=yes,scrollbars=yes,resizable=yes,top=100,left=100,width=800,height=600');
+    const imagePreview = document.getElementById("image-preview");
+    imagePreview.innerHTML = "";
   const apiUrl =
-    "https://prdqanzos.chili-publish.online/grafx/api/v1/environment/GraFx-Training-ST22/media?limit=10&sortBy=name&sortOrder=asc";
+    "https://prdqanzos.chili-publish.online/grafx/api/v1/environment/GraFx-Training-ST22/media?limit=100&sortBy=name&sortOrder=asc";
   const response = await fetch(apiUrl, {
     method: "GET",
     headers: {
@@ -143,6 +144,9 @@ window.showImagePreview = async function () {
   }
 
   const data = await response.json();
+
+  const row = document.createElement("div");
+  row.classList.add("row");
 
   // Create and append image elements to the preview popup
   data.data.forEach(async (image) => {
@@ -164,7 +168,8 @@ window.showImagePreview = async function () {
         const objectUrl = URL.createObjectURL(blob);
         const imgElement = document.createElement("img");
         imgElement.src = objectUrl;
-        popup.document.body.appendChild(imgElement);
+        imgElement.classList.add("preview-image");
+        row.appendChild(imgElement);
       } else {
         console.error(`Failed to fetch thumbnail for image: ${image.id}`);
       }
@@ -174,7 +179,7 @@ window.showImagePreview = async function () {
   });
 
   // Show the preview window
-  popup.document.title = 'Image Preview';
+  imagePreview.appendChild(row);
 };
 
   
