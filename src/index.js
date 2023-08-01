@@ -123,12 +123,16 @@ window.closePopup = async function() {
   }
 
 
-// function to show the image preview popup
+// Add this function to show the image preview popup
 window.showImagePreview = async function () {
     const imagePreview = document.getElementById("image-preview");
+    if (imagePreview.style.display === "block") {
+        imagePreview.style.display = "none";
+        return;
+      }
     imagePreview.innerHTML = "";
   const apiUrl =
-    "https://prdqanzos.chili-publish.online/grafx/api/v1/environment/GraFx-Training-ST22/media?limit=100&sortBy=name&sortOrder=asc";
+    "https://prdqanzos.chili-publish.online/grafx/api/v1/environment/GraFx-Training-ST22/media?limit=50&sortBy=name&sortOrder=asc";
   const response = await fetch(apiUrl, {
     method: "GET",
     headers: {
@@ -180,7 +184,13 @@ window.showImagePreview = async function () {
 
   // Show the preview window
   imagePreview.appendChild(row);
+  imagePreview.style.display = "block";
 };
+
+document.getElementById("image-preview").addEventListener("click", function () {
+    const imagePreview = document.getElementById("image-preview");
+    imagePreview.style.display = "none";
+  });
 
   
 
