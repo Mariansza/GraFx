@@ -8,6 +8,7 @@ const client_id = process.env.CLIENT_ID ;
 const client_secret = process.env.CLIENT_SECRET ;
 let authToken ;
 
+
 async function getToken() {
   const url = 'https://integration-login.chiligrafx.com/oauth/token';
   const data = {
@@ -30,7 +31,7 @@ async function getToken() {
     console.error('Error in getting token:', error);
     throw error;
   }
-}
+} 
 
 getToken();
 
@@ -226,5 +227,15 @@ document.getElementById("image-preview").addEventListener("click", function () {
   });
 
   
+// ...
 
-initEditor(authToken);
+async function startApp() {
+  try {
+    await getToken();
+    initEditor(authToken);
+  } catch (error) {
+    console.error('Error:', error);
+    
+}}
+
+startApp();
