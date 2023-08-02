@@ -21,6 +21,7 @@
   },
   "dependencies": {
     "@chili-publish/studio-sdk": "^0.133.2",
+    "axios": "^1.4.0",
     "dotenv": "^16.3.1"
   }
 }

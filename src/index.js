@@ -1,8 +1,41 @@
 import StudioSDK from "@chili-publish/studio-sdk";
 import { defaultJSON } from "./default-doc";
 require("dotenv").config();
+import axios from 'axios';
 
-const authToken = process.env.AUTH_TOKEN ;
+
+const client_id = process.env.CLIENT_ID ;
+const client_secret = process.env.CLIENT_SECRET ;
+let authToken ;
+
+async function getToken() {
+  const url = 'https://integration-login.chiligrafx.com/oauth/token';
+  const data = {
+    client_id: `${client_id}`,
+    client_secret: `${client_secret}`,
+    audience: 'https://chiligrafx.com',
+    grant_type: 'client_credentials'
+  };
+
+  try {
+    const response = await axios.post(url, data, {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
+
+    console.log('Token:', response.data.access_token);
+    authToken = response.data.access_token;
+  } catch (error) {
+    console.error('Error in getting token:', error);
+    throw error;
+  }
+}
+
+getToken();
+
+
+
 
 async function initEditor(authToken) {
     const SDK = new StudioSDK({
@@ -19,7 +52,7 @@ async function initEditor(authToken) {
 
 
 async function loadDocument(docJSON, authToken) {
-    const environmentAPI = window.SDK.utils.createEnvironmentBaseURL({type: "production", environment: "GraFx-Training-ST22"})
+    const environmentAPI = window.SDK.utils.createEnvironmentBaseURL({type: "sandbox", environment: "internship-marian"})
     window.SDK.configuration.setValue("ENVIRONMENT_API", environmentAPI);
 
 
@@ -132,7 +165,7 @@ window.showImagePreview = async function () {
       }
     imagePreview.innerHTML = "";
   const apiUrl =
-    "https://prdqanzos.chili-publish.online/grafx/api/v1/environment/GraFx-Training-ST22/media?limit=50&sortBy=name&sortOrder=asc";
+    "https://internship-marian.chili-publish-sandbox.online/grafx/api/v1/environment/internship-marian/media?limit=10&sortBy=name&sortOrder=asc";
   const response = await fetch(apiUrl, {
     method: "GET",
     headers: {
@@ -154,7 +187,7 @@ window.showImagePreview = async function () {
 
   // Create and append image elements to the preview popup
   data.data.forEach(async (image) => {
-    const imageUrl = `https://prdqanzos.chili-publish.online/grafx/api/v1/environment/GraFx-Training-ST22/media/${image.id}/preview/medium`;
+    const imageUrl = `https://internship-marian.chili-publish-sandbox.online/grafx/api/v1/environment/internship-marian/media/${image.id}/preview?previewType=medium`;
 
     // Fetch thumbnail image individually for each image
     try {
