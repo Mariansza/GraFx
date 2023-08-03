@@ -166,7 +166,7 @@ window.showImagePreview = async function () {
       }
     imagePreview.innerHTML = "";
   const apiUrl =
-    "https://internship-marian.chili-publish-sandbox.online/grafx/api/v1/environment/internship-marian/media?limit=10&sortBy=name&sortOrder=asc";
+    "https://internship-marian.chili-publish-sandbox.online/grafx/api/v1/environment/internship-marian/media?limit=50&sortBy=name&sortOrder=asc";
   const response = await fetch(apiUrl, {
     method: "GET",
     headers: {
@@ -221,13 +221,13 @@ window.showImagePreview = async function () {
   imagePreview.style.display = "block";
 };
 
-document.getElementById("image-preview").addEventListener("click", function () {
+document.getElementById("preview-button").addEventListener("click", function () {
     const imagePreview = document.getElementById("image-preview");
     imagePreview.style.display = "none";
   });
 
   
-// ...
+
 
 async function startApp() {
   try {
@@ -239,3 +239,4 @@ async function startApp() {
 }}
 
 startApp();
+
