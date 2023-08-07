@@ -25,10 +25,49 @@ To install the GraFx Studio-SDK you simple type this command
 npm install @chili-publish/studio-sdk
 ```
 
+#### Express 
+
+Express is a minimal and flexible Node.js web application framework that provides a robust set of features for web and mobile applications.
+
+To install Express you simple type this command
+```sh
+npm install express
+```
+
+#### Axios 
+
+Axios is a promise based HTTP client for the browser and node.js
+
+To install Axios you simple type this command
+```sh
+npm install axios
+```
+#### Dotenv
+
+Dotenv is a zero-dependency module that loads environment variables from a .env file into process.env
+
+To install Dotenv you simple type this command
+```sh
+npm install dotenv
+```
+
+
 ### Creating the base files
 So now that we have our dependency packages installed we can start.
 
-We will start our website with this command by navigating to our directory in our terminal and running
+Create an .env file in backend folder and add the following lines to it with your credentials from the CHILI Publisher portal.
+
+```sh
+CLIENT_ID = '...'
+CLIENT_SECRET = '...'
+```
+
+We will start our website with these commands by navigating to our directory in our terminal and running express server then parcel server: 
+
+```sh	
+node backend/server.js
+```
+
 ```sh
 npx parcel src/index.html
 ```
