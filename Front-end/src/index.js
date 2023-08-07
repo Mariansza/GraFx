@@ -4,36 +4,19 @@ require("dotenv").config();
 import axios from 'axios';
 
 
-const client_id = process.env.CLIENT_ID ;
-const client_secret = process.env.CLIENT_SECRET ;
-let authToken ;
+
+let authToken;
 
 
-async function getToken() {
-  const url = 'https://integration-login.chiligrafx.com/oauth/token';
-  const data = {
-    client_id: `${client_id}`,
-    client_secret: `${client_secret}`,
-    audience: 'https://chiligrafx.com',
-    grant_type: 'client_credentials'
-  };
-
+async function fetchAuthToken() {
   try {
-    const response = await axios.post(url, data, {
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    });
-
-    console.log('Token:', response.data.access_token);
-    authToken = response.data.access_token;
+    const response = await fetch('http://localhost:3000/token');
+    const data = await response.json();
+    authToken = data.token;
   } catch (error) {
-    console.error('Error in getting token:', error);
-    throw error;
+    console.error('Error:', error);
   }
-} 
-
-getToken();
+}
 
 
 
@@ -228,15 +211,13 @@ document.getElementById("preview-button").addEventListener("click", function () 
 
   
 
+  async function startApp() {
+    try {
+      await fetchAuthToken();
+      initEditor(authToken);
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  }
 
-async function startApp() {
-  try {
-    await getToken();
-    initEditor(authToken);
-  } catch (error) {
-    console.error('Error:', error);
-    
-}}
-
-startApp();
-
+  startApp();
