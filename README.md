@@ -5,9 +5,9 @@ This basic example shows how simple it is to make a Javascript integration, as w
 ## How to run
 
 ### Installing Node
-We will be using [Node.js](https://nodejs.org/) and using the Node Package Manager (npm) to install [Parcel] If you do not have Node installed on your system you can install it at the website above, this will also install the Node Package Manager.
+We will be using [Node.js](https://nodejs.org/) and using the Node Package Manager (npm) to install Parcel. If you do not have Node installed on your system you can install it at the website above, this will also install the Node Package Manager.
 
-Now we can install the two packages we need.
+Now we can install the packages we need.
 
 ##### Parcel
 Parcel is a JavaScript bundler that also includes a local development web server. 
@@ -53,7 +53,7 @@ npm install dotenv
 
 
 ### Creating the base files
-So now that we have our dependency packages installed we can start.
+So now that we have our dependency packages installed :
 
 Create an .env file in backend folder and add the following lines to it with your credentials from the CHILI Publisher portal.
 
