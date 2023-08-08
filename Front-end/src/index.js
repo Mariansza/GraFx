@@ -5,8 +5,7 @@ import axios from 'axios';
 
 
 
-let authToken;
-
+let authToken ;
 
 async function fetchAuthToken() {
   try {
@@ -127,97 +126,97 @@ window.updateImage = async function() {
     await window.SDK.frame.setImageFromConnector(frameID, 'grafx-media', assetID);
     inputField.value = '';
     closePopup();
-  }
+}
 
 window.showPopup = async function() {
     const popup = await document.getElementById('popup');
     popup.style.display = 'block';
-  }
+}
 
 window.closePopup = async function() {
     const popup = await document.getElementById('popup');
     popup.style.display = 'none';
+}
+
+
+async function getImageData(){
+  try {
+    const response = await fetch('http://localhost:3000/get-image-data');
+    return response.json();
+  }
+  catch (error) {
+    console.error("Error fetching image data:", error);
   }
 
+}
 
-// Add this function to show the image preview popup
 window.showImagePreview = async function () {
-    const imagePreview = document.getElementById("image-preview");
-    if (imagePreview.style.display === "block") {
-        imagePreview.style.display = "none";
-        return;
-      }
-    imagePreview.innerHTML = "";
-  const apiUrl =
-    "https://internship-marian.chili-publish-sandbox.online/grafx/api/v1/environment/internship-marian/media?limit=50&sortBy=name&sortOrder=asc";
-  const response = await fetch(apiUrl, {
-    method: "GET",
-    headers: {
-      accept: "application/json",
-      Authorization:
-      `Bearer ${authToken}`,
-    },
-  });
-
-  if (!response.ok) {
-    console.error("Failed to fetch image data.");
+  const imagePreview = document.getElementById("image-preview");
+  if (imagePreview.style.display === "block") {
+    imagePreview.style.display = "none";
     return;
   }
 
-  const data = await response.json();
+  imagePreview.innerHTML = "";
 
-  const row = document.createElement("div");
-  row.classList.add("row");
+  try {
+    const data = await getImageData();
 
-  // Create and append image elements to the preview popup
-  data.data.forEach(async (image) => {
-    const imageUrl = `https://internship-marian.chili-publish-sandbox.online/grafx/api/v1/environment/internship-marian/media/${image.id}/preview?previewType=medium`;
+    const row = document.createElement("div");
+    row.classList.add("row");
 
-    // Fetch thumbnail image individually for each image
-    try {
-      const thumbnailResponse = await fetch(imageUrl, {
-        method: "GET",
-        headers: {
-          accept: "*/*",
-          Authorization:
-          `Bearer ${authToken}`,
+    // Create and append image elements to the preview popup
+    data.data.forEach(async (image) => {
+      const imageUrl = `https://internship-marian.chili-publish-sandbox.online/grafx/api/v1/environment/internship-marian/media/${image.id}/preview?previewType=medium`;
+
+      // Fetch thumbnail image individually for each image
+      try {
+        const thumbnailResponse = await fetch(imageUrl, {
+          method: "GET",
+          headers: {
+            accept: "*/*",
+            Authorization: `Bearer ${authToken}`,
+          }
+        });
+
+        if (thumbnailResponse.ok) {
+          const blob = await thumbnailResponse.blob();
+          const objectUrl = URL.createObjectURL(blob);
+          const imgElement = document.createElement("img");
+          imgElement.src = objectUrl;
+          imgElement.classList.add("preview-image");
+          row.appendChild(imgElement);
+        } else {
+          console.error(`Failed to fetch thumbnail for image: ${image.id}`);
         }
-      });
-
-      if (thumbnailResponse.ok) {
-        const blob = await thumbnailResponse.blob();
-        const objectUrl = URL.createObjectURL(blob);
-        const imgElement = document.createElement("img");
-        imgElement.src = objectUrl;
-        imgElement.classList.add("preview-image");
-        row.appendChild(imgElement);
-      } else {
-        console.error(`Failed to fetch thumbnail for image: ${image.id}`);
+      } catch (error) {
+        console.error(`Failed to fetch thumbnail for image: ${image.id}`, error);
       }
-    } catch (error) {
-      console.error(`Failed to fetch thumbnail for image: ${image.id}`, error);
-    }
-  });
+    });
 
-  // Show the preview window
-  imagePreview.appendChild(row);
-  imagePreview.style.display = "block";
+    // Show the preview window
+    imagePreview.appendChild(row);
+    imagePreview.style.display = "block";
+  } catch (error) {
+    console.error("Error fetching image data:", error);
+  }
 };
-
-document.getElementById("preview-button").addEventListener("click", function () {
-    const imagePreview = document.getElementById("image-preview");
-    imagePreview.style.display = "none";
-  });
-
   
 
-  async function startApp() {
-    try {
-      await fetchAuthToken();
-      initEditor(authToken);
-    } catch (error) {
-      console.error('Error:', error);
-    }
+document.getElementById("preview-button").addEventListener("click", function () {
+  const imagePreview = document.getElementById("image-preview");
+  imagePreview.style.display = "none";
+});
+
+
+
+async function startApp() {
+  try {
+    await fetchAuthToken();
+    initEditor(authToken);
+  } catch (error) {
+    console.error('Error:', error);
   }
+}
 
   startApp();
