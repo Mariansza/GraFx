@@ -1,66 +1,69 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/styles/main.css" />
-  <title>GraFx Studio Integration</title>
-</head>
-<body>
-    <div class="page-title">
-        <h1 id="project-title">
-          <img src="/img/Aperture_Science.svg.png" alt="Aperture Graphic Lab Logo" class="logo">
-          Aperture Graphic Lab
-        </h1>
-    </div>
-    <section class="toolbar">
-      <button class="menubutton" id="downloadbutton" onclick="downloadDocument()">Download Document</button>
-      <div class="dropdown">
-        <button class="menubutton">Edit</button>
-        <div class="dropdown-content" id="edit-dropdown">
-          <button class="button" onclick="remove()">Delete selected frame</button>
-          <button class="button" onclick="removeall()">Delete all</button>
-        </div>
+  <!DOCTYPE html>
+  <html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/styles/main.css" />
+    <title>GraFx Studio Integration</title>
+  </head>
+  <body>
+      <div class="page-title">
+          <h1 id="project-title">
+            <img src="/img/Aperture_Science.svg.png" alt="Aperture Graphic Lab Logo" class="logo">
+            Aperture Graphic Lab
+          </h1>
       </div>
-      <div class="dropdown">
-        <button class="menubutton" >Pointer options</button>
-        <div class="dropdown-content" id="pointer-dropdown">
-            <button class="button" onclick="setTool('select')">Select</button>
-            <button class="button" onclick="setTool('hand')">Hand</button>
-            <button class="button" onclick="setTool('zoom')">Zoom</button>
-        </div>
-      </div>
-      <div class="dropdown">
-        <button class="menubutton" >Insertion</button>
-        <div class="dropdown-content">
-            <button class="button" onclick="setTool('textFrame')">Text</button>
-            <button class="button" onclick="setTool('ellipse')">Ellipse</button>
-            <button class="button" onclick="setTool('rect')">Rectangle</button>
-            <button class="button" onclick="setTool('polygon')">Polygon</button>
-        </div>
-      </div>
-      <div class="dropdown">
-        <button class="menubutton">Image</button>
-        <div class="dropdown-content" id="image-dropdown">
-          <button class="button" onclick="setTool('imageFrame')">Add frame</button>
-          <button class="button" onclick="showPopup()">Update image</button>
-          <div class="popup" id="popup">
-            <input type="text" id="inputField" placeholder="Enter the id of the wanted image">
-            <button onclick="updateImage()">Validate</button>
-            <button onclick="closePopup()">Cancel</button>
+      <section class="toolbar">
+        <button class="menubutton" id="downloadbutton" onclick="downloadDocument()">Download Document</button>
+        <div class="dropdown">
+          <button class="menubutton">Edit</button>
+          <div class="dropdown-content" id="edit-dropdown">
+            <button class="button" onclick="remove()">Delete selected frame</button>
+            <button class="button" onclick="removeall()">Delete all</button>
           </div>
         </div>
+        <div class="dropdown">
+          <button class="menubutton" >Pointer options</button>
+          <div class="dropdown-content" id="pointer-dropdown">
+              <button class="button" onclick="setTool('select')">Select</button>
+              <button class="button" onclick="setTool('hand')">Hand</button>
+              <button class="button" onclick="setTool('zoom')">Zoom</button>
+          </div>
+        </div>
+        <div class="dropdown">
+          <button class="menubutton" >Insertion</button>
+          <div class="dropdown-content">
+              <button class="button" onclick="setTool('textFrame')">Text</button>
+              <button class="button" onclick="setTool('ellipse')">Ellipse</button>
+              <button class="button" onclick="setTool('rect')">Rectangle</button>
+              <button class="button" onclick="setTool('polygon')">Polygon</button>
+          </div>
+        </div>
+        <div class="dropdown">
+          <button class="menubutton">Image</button>
+          <div class="dropdown-content" id="image-dropdown">
+            <button class="button" onclick="setTool('imageFrame')">Add frame</button>
+            <button class="button" onclick="showPopup()">Update image</button>
+            <div class="popup" id="popup">
+              <input type="text" id="inputField" placeholder="Enter the id of the wanted image">
+              <button onclick="updateImage()">Validate</button>
+              <button onclick="closePopup()">Cancel</button>
+            </div>
+          </div>
+        </div>
+        <button class="menubutton" onclick="showImagePreview()" id="preview-button">Preview Images</button>
+      </section>
+      <div class="image-preview" id="image-preview"></div>
+      <div class="drop-zone" id="drop-zone">
+        <div id="dropdiv">  </div>
+        <div  id="studio-editor"></div>
+        <a id="downloadAnchor" style="display:hidden"></a>
       </div>
-      <button class="menubutton" onclick="showImagePreview()" id="preview-button">Preview Images</button>
-    </section>
-    <div class="image-preview" id="image-preview"></div>
-    <div style="height: 100vh" id="studio-editor"></div>
-    <a id="downloadAnchor" style="display:hidden"></a>
-    <script type="module" src="/src/index.js"></script>
-</body>
-<footer>
-  <p>Powered by Chili publish GraFx Studio-SDK</p>
-</footer>
-</html>
+      <script type="module" src="/src/index.js"></script>
+  </body>
+  <footer>
+    <p>Powered by Chili publish GraFx Studio-SDK</p>
+  </footer>
+  </html>

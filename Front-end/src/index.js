@@ -3,8 +3,6 @@ import { defaultJSON } from "./default-doc";
 require("dotenv").config();
 import axios from 'axios';
 
-
-
 let authToken ;
 
 async function fetchAuthToken() {
@@ -150,26 +148,29 @@ async function getImageData(){
 
 }
 
+
+
+
 window.showImagePreview = async function () {
   const imagePreview = document.getElementById("image-preview");
+  
   if (imagePreview.style.display === "block") {
     imagePreview.style.display = "none";
     return;
   }
-
   imagePreview.innerHTML = "";
 
   try {
     const data = await getImageData();
 
+    // Créer un div pour contenir les images (la row)
     const row = document.createElement("div");
     row.classList.add("row");
 
-    // Create and append image elements to the preview popup
-    data.data.forEach(async (image) => {
+    
+    for (const image of data.data) {
       const imageUrl = `https://internship-marian.chili-publish-sandbox.online/grafx/api/v1/environment/internship-marian/media/${image.id}/preview?previewType=medium`;
 
-      // Fetch thumbnail image individually for each image
       try {
         const thumbnailResponse = await fetch(imageUrl, {
           method: "GET",
@@ -185,6 +186,15 @@ window.showImagePreview = async function () {
           const imgElement = document.createElement("img");
           imgElement.src = objectUrl;
           imgElement.classList.add("preview-image");
+
+          imgElement.setAttribute("data-image-id", image.id);
+
+          // Ajouter l'événement de glisser-déposer à chaque image
+          imgElement.addEventListener("dragstart", (event) => {
+            event.dataTransfer.setData("image-id", image.id);
+          });
+
+          // Ajouter chaque image au div "row"
           row.appendChild(imgElement);
         } else {
           console.error(`Failed to fetch thumbnail for image: ${image.id}`);
@@ -192,20 +202,77 @@ window.showImagePreview = async function () {
       } catch (error) {
         console.error(`Failed to fetch thumbnail for image: ${image.id}`, error);
       }
-    });
+    }
 
-    // Show the preview window
+    // Ajouter le div "row" avec les images à la fenêtre de prévisualisation
     imagePreview.appendChild(row);
     imagePreview.style.display = "block";
   } catch (error) {
     console.error("Error fetching image data:", error);
   }
 };
+
   
 
 document.getElementById("preview-button").addEventListener("click", function () {
   const imagePreview = document.getElementById("image-preview");
   imagePreview.style.display = "none";
+});
+
+
+// get html elements
+const dropdiv = document.getElementById("dropdiv");
+const imagePreviewContainer = document.getElementById("image-preview");
+
+function setdropdivSize(width, height) {
+  dropdiv.style.width = width;
+  dropdiv.style.height = height;
+}
+
+function handleDragStart(){
+  setdropdivSize("100%", "100%");
+  const dropdiv = document.getElementById("dropdiv");
+  dropdiv.textContent = "Drag and drop an image here"; 
+}
+
+function handleDragEnd() {
+  setdropdivSize("0%", "0%");
+  const dropdiv = document.getElementById("dropdiv");
+  dropdiv.textContent = "";
+  
+}
+
+imagePreviewContainer.addEventListener("dragstart", () => {
+  handleDragStart();
+});
+
+const handleImageDrop = async (event) => {
+  event.preventDefault();
+  const imageId = event.dataTransfer.getData("image-id");
+
+  try {
+  
+    const jsonString = (await window.SDK.frame.getSelected()).data;
+    const jsonArray = JSON.parse(jsonString);
+    const frameID = jsonArray[0].id;
+
+    await window.SDK.frame.setImageFromConnector(frameID, 'grafx-media', imageId);
+    handleDragEnd();
+  } catch (error) {
+    console.error("Error adding image to frame:", error);
+  }
+};
+
+const dropZone = document.getElementById("drop-zone"); 
+dropZone.addEventListener("drop", handleImageDrop);
+imagePreviewContainer.addEventListener("drop", handleDragEnd);
+
+imagePreviewContainer.addEventListener("dragover", (event) => {
+  event.preventDefault();
+});
+
+dropZone.addEventListener("dragover", (event) => {
+  event.preventDefault();
 });
 
 
@@ -219,4 +286,4 @@ async function startApp() {
   }
 }
 
-  startApp();
+startApp();
