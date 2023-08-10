@@ -5,6 +5,7 @@ import axios from 'axios';
 
 let authToken ;
 
+
 async function fetchAuthToken() {
   try {
     const response = await fetch('http://localhost:3000/token');
@@ -14,8 +15,6 @@ async function fetchAuthToken() {
     console.error('Error:', error);
   }
 }
-
-
 
 
 async function initEditor(authToken) {
@@ -249,15 +248,25 @@ imagePreviewContainer.addEventListener("dragstart", () => {
 const handleImageDrop = async (event) => {
   event.preventDefault();
   const imageId = event.dataTransfer.getData("image-id");
+  
 
   try {
-  
-    const jsonString = (await window.SDK.frame.getSelected()).data;
-    const jsonArray = JSON.parse(jsonString);
-    const frameID = jsonArray[0].id;
-
-    await window.SDK.frame.setImageFromConnector(frameID, 'grafx-media', imageId);
-    handleDragEnd();
+    const SelectedTest = (await window.SDK.frame.getSelected()).data;
+    
+    if (SelectedTest === "[]") {
+      window.SDK.frame.create("image", 300, 150, 200, 200)
+      const jsonString = (await window.SDK.frame.getSelected()).data;
+      const jsonArray = JSON.parse(jsonString);
+      const frameID = jsonArray[0].id;
+      await window.SDK.frame.setImageFromConnector(frameID, 'grafx-media', imageId);
+      handleDragEnd();
+    } else {
+      const jsonString = (await window.SDK.frame.getSelected()).data;
+      const jsonArray = JSON.parse(jsonString);
+      const frameID = jsonArray[0].id;
+      await window.SDK.frame.setImageFromConnector(frameID, 'grafx-media', imageId);
+      handleDragEnd();
+    }
   } catch (error) {
     console.error("Error adding image to frame:", error);
   }
