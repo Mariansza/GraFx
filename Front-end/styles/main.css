@@ -34,14 +34,7 @@ body {
 }
 
 
-#downloadbutton{
-    background-color: #70e40bd2;
-}
 
-#downloadbutton:hover{
-    background-color: #70e40b;
-    color: #fff;
-}
 .menubutton{
     cursor: pointer;
     display: inline-block;
@@ -83,6 +76,9 @@ body {
     padding: 8px 0;
     z-index: 1;
 }
+
+
+  
 
 .dropdown-content button {
     display: block;
@@ -179,6 +175,8 @@ img.preview-image {
     border-radius: 4px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); 
   }
+
+
   
   .image-preview {
     max-height: calc(100vh - 270px); 
@@ -186,8 +184,9 @@ img.preview-image {
     
     background-color:rgb(255, 255, 255);
    
-
 }
+
+
   .row {
     display: flex;
     flex-wrap: wrap;
@@ -226,3 +225,47 @@ img.preview-image {
     padding-top: 30px;
     
   }
+
+
+  .template-preview {
+    max-height: calc(100vh - 270px);    
+    background-color: rgb(255, 255, 255);
+   
+}
+
+.template-preview-item {
+    width: 100px;
+    height: 100px;
+    margin: 5px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    background-size: cover;
+    background-position: center;
+}
+
+.template-name {
+    font-size: 14px;
+    
+    margin-top: 5px;
+}
+
+.template-container {
+    text-align: center;
+    margin-right: 20px; 
+}
+
+#popup2 {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: 16px;
+    z-index: 1000;
+  }
+  

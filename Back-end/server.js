@@ -71,11 +71,34 @@ app.get('/get-image-data', async (req, res) => {
         res.status(500).json({ error: 'Something went wrong' });
     }
 });
-      
- 
-      
+
+
+app.get('/get-template-data', async (req, res) => {
+    try {
+        const apiUrl =
+        "https://internship-marian.chili-publish-sandbox.online/grafx/api/v1/environment/internship-marian/templates?limit=10&sortBy=name&sortOrder=asc";
+        const resp = await axios.get(apiUrl, {
+        headers: {
+            accept: "application/json",
+            Authorization: `Bearer ${authToken}`,
+        },
+
+        });
+
+        if (!resp.data || !resp.data.data) {
+            throw new Error('Failed to fetch image data.');
+        }
+        res.send(resp.data);
+    } catch (error) {
+        console.error("Error fetching template data:", error);
+        res.status(500).json({ error: 'Something went wrong' });
+
+
+    }
+});
 
 
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
 });
+

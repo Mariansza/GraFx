@@ -16,7 +16,14 @@
           </h1>
       </div>
       <section class="toolbar">
-        <button class="menubutton" id="downloadbutton" onclick="downloadDocument()">Download Document</button>
+        <div class="dropdown">
+          <button class="menubutton" id="downloadbutton" >File</button>
+          <div class="dropdown-content" id="file-dropdown">
+            <button class="button" onclick="loadTemplatePreview()">Load</button>
+            <button class="button">Save</button>
+            <button class="button" >Export as PNG</button>
+          </div>
+        </div>
         <div class="dropdown">
           <button class="menubutton">Edit</button>
           <div class="dropdown-content" id="edit-dropdown">
@@ -31,7 +38,7 @@
               <button class="button" onclick="setTool('hand')">Hand</button>
               <button class="button" onclick="setTool('zoom')">Zoom</button>
           </div>
-        </div>
+        </div>  
         <div class="dropdown">
           <button class="menubutton" >Insertion</button>
           <div class="dropdown-content">
@@ -54,8 +61,13 @@
           </div>
         </div>
         <button class="menubutton" onclick="showImagePreview()" id="preview-button">Preview Images</button>
+        <div  id="popup2">
+          Template loaded successfully!
+        </div>
       </section>
       <div class="image-preview" id="image-preview"></div>
+      <div class="template-preview" id="template-preview"></div>
+
       <div class="drop-zone" id="drop-zone">
         <div id="dropdiv">  </div>
         <div  id="studio-editor"></div>

@@ -5,6 +5,8 @@ import axios from 'axios';
 
 let authToken ;
 
+let templateBody ;
+let currentTemplateId;
 
 async function fetchAuthToken() {
   try {
@@ -55,9 +57,11 @@ async function loadDocument(docJSON, authToken) {
 }
 
 async function getDocumentJSON() {
-    const documentJSON = (await SDK.document.getCurrentState()).data
-    return JSON.stringify(documentJSON)
+  const parsedData = (await SDK.document.getCurrentState()).data;
+  return parsedData;
 }
+
+
 
 window.downloadDocument = async function() {
     const documentJSON = await getDocumentJSON();
@@ -67,6 +71,15 @@ window.downloadDocument = async function() {
     downloadAnchor.setAttribute("download", "document.json");
     downloadAnchor.click();
 }
+
+
+
+window.toggleDropdownFile = async function() {
+  const downloadfile = document.querySelector('#file-dropdown');
+  downloadfile.style.display = (downloadfile.style.display === 'block') ? 'none' : 'block';
+}
+
+
 
 
 window.setTool = async function(tool) {
@@ -148,11 +161,129 @@ async function getImageData(){
 }
 
 
+async function downloadTemplate(templateId) {
+  try{
+    const url = `https://internship-marian.chili-publish-sandbox.online/grafx/api/v1/environment/internship-marian/templates/${templateId}/download`;
+    const response = await axios.get(url, {
+      headers:{
+        accept: "*/*",
+        Authorization : `Bearer ${authToken}`
+      },
+    });
+    
+    templateBody = await response.data;
+    loadDocument(templateBody, authToken);
+    currentTemplateId = templateId;
+    const popup = document.getElementById('popup2');
+    popup.style.display = 'block';
+    const templatePreview = document.getElementById("template-preview");
+    templatePreview.style.display = "none";
+
+    
+    setTimeout(() => {
+      popup.style.display = 'none';
+    }, 2500);
+  } catch (error) {
+    console.error("Error downloading template:", error);
+    throw error;
+  }
+}
+
+async function getTemplateData(){
+  try {
+    const response = await fetch('http://localhost:3000/get-template-data');
+    return response.json();
+  }
+  catch (error) {
+    console.error("Error fetching templates data:", error);
+  }
+}
+
+//loading all templates previews
+window.loadTemplatePreview = async function () {
+  const templatePreview = document.getElementById("template-preview");
+  const imagePreview = document.getElementById("image-preview");
+
+  if (imagePreview.style.display === "block"){
+    imagePreview.style.display = "none";
+  }
+
+  if (templatePreview.style.display === "flex") {
+    templatePreview.style.display = "none";
+    return;
+  }
+  templatePreview.innerHTML = "";
+
+  try {
+    const data = await getTemplateData();
+
+    const row = document.createElement("div");
+    row.classList.add("row");
+
+    for (const template of data.data) {
+      const templateContainer = document.createElement("div");
+      templateContainer.classList.add("template-container");
+
+      const imageUrl = `https://internship-marian.chili-publish-sandbox.online/grafx/api/v1/environment/internship-marian/templates/${template.id}/preview?previewType=thumbnail`;
+      const thumbnailResponse = await fetch(imageUrl, {
+        method: "GET",
+        headers: {
+          accept: "*/*",
+          Authorization: `Bearer ${authToken}`,
+        },
+      });
+
+      if (thumbnailResponse.ok) {
+        const blob = await thumbnailResponse.blob();
+        const objectUrl = URL.createObjectURL(blob);
+        const templateElement = document.createElement("div");
+        templateElement.classList.add("template-preview-item");
+        templateElement.style.backgroundImage = `url(${objectUrl})`;
+
+        templateElement.setAttribute("data-template-id", template.id);
+        templateContainer.appendChild(templateElement);
+
+        const templateName = document.createElement("p");
+        templateName.classList.add("template-name");
+        templateName.textContent = template.name;
+
+        templateElement.addEventListener("click", async () => {
+          const templateId = template.id;
+          await downloadTemplate(templateId);
+        });
+
+        
+        templateContainer.appendChild(templateElement);
+        templateContainer.appendChild(templateName);
+
+        row.appendChild(templateContainer);
+
+        
+      } else {
+        console.error(`Failed to fetch thumbnail for template: ${template.id}`);
+      }
+    }
+
+    templatePreview.appendChild(row);
+    templatePreview.style.display = "flex";
+  } catch (error) {
+    console.error("Error fetching template data:", error);
+  }
+};
 
 
+
+
+
+// Loading all images previews
 window.showImagePreview = async function () {
   const imagePreview = document.getElementById("image-preview");
+  const templatePreview = document.getElementById("template-preview");
   
+  if (templatePreview.style.display === "flex"){
+    templatePreview.style.display = "none";
+  }
+
   if (imagePreview.style.display === "block") {
     imagePreview.style.display = "none";
     return;
@@ -162,7 +293,7 @@ window.showImagePreview = async function () {
   try {
     const data = await getImageData();
 
-    // Créer un div pour contenir les images (la row)
+    // create a div to contain the image previews (the row)
     const row = document.createElement("div");
     row.classList.add("row");
 
@@ -188,12 +319,12 @@ window.showImagePreview = async function () {
 
           imgElement.setAttribute("data-image-id", image.id);
 
-          // Ajouter l'événement de glisser-déposer à chaque image
+          // add drag and drop event listener to each image
           imgElement.addEventListener("dragstart", (event) => {
             event.dataTransfer.setData("image-id", image.id);
           });
 
-          // Ajouter chaque image au div "row"
+          // add each div to the row
           row.appendChild(imgElement);
         } else {
           console.error(`Failed to fetch thumbnail for image: ${image.id}`);
@@ -203,7 +334,7 @@ window.showImagePreview = async function () {
       }
     }
 
-    // Ajouter le div "row" avec les images à la fenêtre de prévisualisation
+    // add the row to the image preview container
     imagePreview.appendChild(row);
     imagePreview.style.display = "block";
   } catch (error) {
@@ -296,3 +427,4 @@ async function startApp() {
 }
 
 startApp();
+
