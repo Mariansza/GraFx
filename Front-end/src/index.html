@@ -20,8 +20,8 @@
           <button class="menubutton" id="downloadbutton" >File</button>
           <div class="dropdown-content" id="file-dropdown">
             <button class="button" onclick="loadTemplatePreview()">Load</button>
-            <button class="button">Save</button>
-            <button class="button" >Export as PNG</button>
+            <button class="button" onclick="saveTemplate()">Save</button>
+            <button class="button" onclick="createImageExport()">Export as PNG</button>
           </div>
         </div>
         <div class="dropdown">
@@ -61,8 +61,11 @@
           </div>
         </div>
         <button class="menubutton" onclick="showImagePreview()" id="preview-button">Preview Images</button>
-        <div  id="popup2">
-          Template loaded successfully!
+        <div class="popup2" id="popup2">
+          Template loaded 
+        </div>
+        <div class="popup2" id="popup3">
+          Template saved 
         </div>
       </section>
       <div class="image-preview" id="image-preview"></div>

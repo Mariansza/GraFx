@@ -3,7 +3,7 @@ import { defaultJSON } from "./default-doc";
 require("dotenv").config();
 import axios from 'axios';
 
-let authToken ;
+let authToken;
 
 let templateBody ;
 let currentTemplateId;
@@ -37,8 +37,6 @@ async function loadDocument(docJSON, authToken) {
     const environmentAPI = window.SDK.utils.createEnvironmentBaseURL({type: "sandbox", environment: "internship-marian"})
     window.SDK.configuration.setValue("ENVIRONMENT_API", environmentAPI);
 
-
-
     if (docJSON) {
         await window.SDK.document.load(docJSON);
     } else {
@@ -53,7 +51,6 @@ async function loadDocument(docJSON, authToken) {
             await configurator.setChiliToken(authToken);
         });
     }
-
 }
 
 async function getDocumentJSON() {
@@ -160,8 +157,104 @@ async function getImageData(){
 
 }
 
+import axios from 'axios';
+
+
+window.createImageExport = async function () {
+    try {
+        const apiUrl = "https://internship-marian.chili-publish-sandbox.online/grafx/api/v1/environment/internship-marian/output/image?outputType=png&layoutToExport=0&pixelRatio=1"
+        const state = await (window.SDK.document.getCurrentState());
+        const jsonData = JSON.parse(state.data);
+        Response = await axios.post(apiUrl, jsonData,
+            {
+                headers: {
+                    'accept': 'application/json',
+                    'Authorization': `Bearer ${authToken}`,
+                    'Content-Type': 'application/json',
+                },
+            }
+        );
+
+        const taskId = Response.data.data.taskId;
+        setTimeout(() => {
+          downloadImage(taskId);
+        }, 2000);
+            
+
+        
+
+    } catch (error) {
+        console.error(error);
+    }
+}
+
+window.downloadImage = async function (taskId) {
+  const apiUrl = `https://internship-marian.chili-publish-sandbox.online/grafx/api/v1/environment/internship-marian/output/tasks/${taskId}/download`;
+  const response = await axios.get(apiUrl, {
+    responseType: 'blob',
+      headers: {
+          accept: "*/*",
+          Authorization: `Bearer ${authToken}`
+      }
+  });
+
+  if (response.status === 200) {
+    
+    const blob = new Blob([response.data], { type: 'image/png' });
+
+    
+    const downloadLink = document.createElement("a");
+    downloadLink.href = window.URL.createObjectURL(blob);
+    downloadLink.download = "downloaded_image.png";
+    downloadLink.textContent = "Download Image";
+    downloadLink.style.display = "none";
+
+    
+    document.body.appendChild(downloadLink);
+
+    
+    downloadLink.click();
+
+    
+    window.URL.revokeObjectURL(downloadLink.href);
+  
+  } else {
+      console.error("Failed to download image:", response.statusText);
+  }
+}
+
+
+
+
+// Function to save a template 
+window.saveTemplate = async function(){
+    try{
+      templateId = currentTemplateId;
+      const apiUrl = `https://internship-marian.chili-publish-sandbox.online/grafx/api/v1/environment/internship-marian/templates/${templateId}`
+      const state = await (window.SDK.document.getCurrentState());
+      const jsonData = JSON.parse(state.data);
+      await axios.put(apiUrl, jsonData, {
+          headers:{
+            'accept': 'application/json',
+            'Authorization': `Bearer ${authToken}`,
+            'Content-Type': 'application/json',
+          },
+      });
+
+      const popup = document.getElementById('popup3');
+      popup.style.display = 'block';
+      setTimeout(() => {
+        popup.style.display = 'none';
+      }, 2500);
+    } catch (error) {
+      console.error("Error saving template:", error);
+      throw error;
+    }
+  
+}
 
 async function downloadTemplate(templateId) {
+  currentTemplateId = templateId;
   try{
     const url = `https://internship-marian.chili-publish-sandbox.online/grafx/api/v1/environment/internship-marian/templates/${templateId}/download`;
     const response = await axios.get(url, {
@@ -173,11 +266,11 @@ async function downloadTemplate(templateId) {
     
     templateBody = await response.data;
     loadDocument(templateBody, authToken);
-    currentTemplateId = templateId;
     const popup = document.getElementById('popup2');
     popup.style.display = 'block';
     const templatePreview = document.getElementById("template-preview");
     templatePreview.style.display = "none";
+    
 
     
     setTimeout(() => {
@@ -385,7 +478,7 @@ const handleImageDrop = async (event) => {
     const SelectedTest = (await window.SDK.frame.getSelected()).data;
     
     if (SelectedTest === "[]") {
-      window.SDK.frame.create("image", 300, 150, 200, 200)
+      window.SDK.frame.create("image", 100, 75, 100, 100)
       const jsonString = (await window.SDK.frame.getSelected()).data;
       const jsonArray = JSON.parse(jsonString);
       const frameID = jsonArray[0].id;
